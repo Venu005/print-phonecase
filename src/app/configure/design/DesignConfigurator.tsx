@@ -96,7 +96,7 @@ const DesignConfigurator = ({
           </div>
         </Rnd>
       </div>
-      <div className="h-[37.5rem] flex flex-col bg-white">
+      <div className="h-[37.5rem] flex flex-col bg-white w-full col-span-full lg:col-span-1">
         <ScrollArea className="relative flex-1 overflow-auto">
           <div
             aria-hidden="true"
