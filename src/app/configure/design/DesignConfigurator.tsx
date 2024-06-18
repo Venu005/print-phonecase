@@ -25,6 +25,10 @@ import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { BASE_PRICE } from "@/config/product";
 import { useToast } from "@/components/ui/use-toast";
 import { useUploadThing } from "@/lib/uploadthing";
+import { useMutation } from "@tanstack/react-query";
+import { SaveConfigProps } from "./action";
+import { saveConfig as _saveConfig } from "./action";
+import { useRouter } from "next/navigation";
 interface DesignConfiguratorProps {
   configId: string;
   imageUrl: string;
@@ -38,6 +42,26 @@ const DesignConfigurator = ({
   imageUrl,
   imgDimensions,
 }: DesignConfiguratorProps) => {
+  const router = useRouter();
+  const { mutate: saveConfig } = useMutation({
+    mutationKey: ["save-config"],
+    mutationFn: async (args: SaveConfigProps) => {
+      // savceConfiguration -  to save the cropped url
+      // _saveConfig - to save the features
+      await Promise.all([saveConfiguration(), _saveConfig(args)]);
+    },
+    onError: () => {
+      toast({
+        title: "Something went wrong",
+        description:
+          "Error while saving your customizations or your croppedImage",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      router.push(`/configure/preview?id=${configId}`);
+    },
+  });
   const { toast } = useToast();
   const { startUpload } = useUploadThing("imageUploader");
   const [options, setOptions] = useState<{
@@ -73,7 +97,7 @@ const DesignConfigurator = ({
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: mimeType });
   }
-  async function saveConfig() {
+  async function saveConfiguration() {
     try {
       const {
         left: caseLeft,
@@ -359,7 +383,19 @@ const DesignConfigurator = ({
                     100
                 )}
               </p>
-              <Button size="sm" className="w-full" onClick={() => saveConfig()}>
+              <Button
+                size="sm"
+                className="w-full"
+                onClick={() =>
+                  saveConfig({
+                    configId,
+                    color: options.color.value,
+                    finish: options.finish.value,
+                    material: options.material.value,
+                    model: options.model.value,
+                  })
+                }
+              >
                 Continue
                 <ArrowRight className="h-4 w-4 ml-1.5 inline" />
               </Button>
