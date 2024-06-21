@@ -41,5 +41,6 @@ export function constructMetadata({
       creator: "@__venusai",
     },
     icons,
+    metadataBase: new URL("https://print-phonecase.vercel.app"),
   };
 }
