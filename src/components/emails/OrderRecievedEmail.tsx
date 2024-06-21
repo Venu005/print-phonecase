@@ -14,7 +14,7 @@ import {
   Text,
 } from "@react-email/components";
 
-const OrderRecievedEmail = ({
+const OrderReceivedEmail = ({
   shippingAddress,
   orderId,
   orderDate,
@@ -26,7 +26,8 @@ const OrderRecievedEmail = ({
   const baseUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://print-phonecase.vercel.app";
+      : "https://casecobra.vercel.app";
+
   return (
     <Html>
       <Head />
@@ -36,19 +37,27 @@ const OrderRecievedEmail = ({
           <Section style={message}>
             <Img
               src={`${baseUrl}/snake-3.png`}
-              width={"65"}
-              height={"73"}
-              alt="delivery"
+              width="65"
+              height="73"
+              alt="delivery snake"
               style={{ margin: "auto" }}
             />
             <Heading style={global.heading}>Thank you for your order!</Heading>
             <Text style={global.text}>
-              We are preparing everything for delivery and will notify you once
-              your package has been shipped. Delivery usually takes 2 days.
+              We&pos;re preparing everything for delivery and will notify you
+              once your package has been shipped. Delivery usually takes 2 days.
             </Text>
             <Text style={{ ...global.text, marginTop: 24 }}>
               If you have any questions regarding your order, please feel free
-              to contact us with your order number and we are here to help.
+              to contact us with your order number and we&pos;re here to help.
+            </Text>
+          </Section>
+          <Hr style={global.hr} />
+          <Section style={global.defaultPadding}>
+            <Text style={adressTitle}>Shipping to: {shippingAddress.name}</Text>
+            <Text style={{ ...global.text, fontSize: 14 }}>
+              {shippingAddress.street}, {shippingAddress.city},{" "}
+              {shippingAddress.state} {shippingAddress.postalCode}
             </Text>
           </Section>
           <Hr style={global.hr} />
@@ -64,7 +73,9 @@ const OrderRecievedEmail = ({
               </Column>
             </Row>
           </Section>
+
           <Hr style={global.hr} />
+
           <Section style={paddingY}>
             <Row>
               <Text
@@ -90,7 +101,7 @@ const OrderRecievedEmail = ({
   );
 };
 
-export default OrderRecievedEmail;
+export default OrderReceivedEmail;
 
 const paddingX = {
   paddingLeft: "40px",
