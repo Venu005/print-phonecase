@@ -43,7 +43,7 @@ const DesignConfigurator = ({
   imgDimensions,
 }: DesignConfiguratorProps) => {
   const router = useRouter();
-  const { mutate: saveConfig } = useMutation({
+  const { mutate: saveConfig, isPending } = useMutation({
     mutationKey: ["save-config"],
     mutationFn: async (args: SaveConfigProps) => {
       // savceConfiguration -  to save the cropped url
@@ -384,6 +384,9 @@ const DesignConfigurator = ({
                 )}
               </p>
               <Button
+                isLoading={isPending}
+                disabled={isPending}
+                loadingText="Saving you image"
                 size="sm"
                 className="w-full"
                 onClick={() =>
